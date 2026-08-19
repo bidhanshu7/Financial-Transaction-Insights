@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package transaction;
+
+import "utils.proto";
+
+message statusResponse{
+    int32 sumTransaction = 1;
+    string status = 2; 
+}
+
+message channelResponse{
+    int32 sumTransaction = 1;
+    int32 channel = 2; 
+}
+
+
+message GetTransactionCountByStatusRequest{
+    int32 noOfDays=1;
+    int32 minAmount=2;
+    int32 maxAmount=3;
+    int32 minVolume=4;
+    int32 maxVolume=5;
+}
+
+message GetTransactionCountByStatusResponse{
+    repeated statusResponse status= 1;
+}
+
+
+message GetTransactionCountByChannelRequest{
+    int32 noOfDays=1;
+    int32 minAmount=2;
+    int32 maxAmount=3;
+    int32 minVolume=4;
+    int32 maxVolume=5;
+}
+
+message GetTransactionCountByChannelResponse
+{
+    repeated channelResponse channel= 1;
+}
+message GetTransactionsRequest
+{
+    int32 noOfDays=1;
+    int32 minAmount=2;
+    int32 maxAmount=3;
+    int32 minVolume=4;
+    int32 maxVolume=5;
+    int32 pageNo=6;
+}
+
+message GetTransactionsResponse
+{
+    repeated Transaction transaction=1;
+}
+
+
+service TransactionService {
+
+    rpc GetTransactionCountByStatus(GetTransactionCountByStatusRequest) returns(GetTransactionCountByStatusResponse){};
+    rpc GetTransactions(GetTransactionsRequest)  returns (GetTransactionsResponse){};
+    rpc GetTransactionCountByChannel(GetTransactionCountByChannelRequest) returns (GetTransactionCountByChannelResponse){};
+
+
+}

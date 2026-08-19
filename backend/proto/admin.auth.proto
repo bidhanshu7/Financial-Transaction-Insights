@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package admin.auth;
+
+import "common.proto";
+
+
+message SignInAdminResponse {
+    Admin  admin = 1;
+    bool success = 2;
+    string message = 3;
+}
+
+message UpdateAdminProfileRequest{
+    Admin admin = 1;
+    string adminId = 2;
+}
+message GetProfileDetailsRequest{
+    string adminId = 1;
+}
+
+message GetProfileDetailsResponse{
+    Admin admin = 1;
+}
+
+service AdminService{
+    rpc SignInAdmin(SignInRequest) returns (SignInAdminResponse) {};
+    rpc UpdateAdminProfile(UpdateAdminProfileRequest) returns (MessageResponse) {};
+    rpc GetProfileDetails(GetProfileDetailsRequest) returns (GetProfileDetailsResponse) {};
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package user;
+
+import "common.proto";
+
+
+message Empty {
+    
+}
+
+
+message UpdateUserRequest{
+    string username= 1;
+    string email= 2;
+    string password= 3;
+    int32 roleId= 4; 
+}
+
+message GetAccountDetailsRequest{
+    string userId = 1;
+}
+
+message GetAccountDetailsResponse{
+    User user = 1;
+    string message = 2;
+}
+
+message SignInUserResponse{
+    User user = 1;
+    string message = 2;
+    bool success = 3;
+}
+
+
+service UserService{
+    rpc SignInUser(SignInRequest) returns (SignInUserResponse) {};
+    rpc UpdateUser(UpdateUserRequest) returns (MessageResponse) {};
+    rpc DeleteUser(Empty) returns (MessageResponse) {};
+    rpc GetAccountDetails(GetAccountDetailsRequest) returns (GetAccountDetailsResponse) {};
+}

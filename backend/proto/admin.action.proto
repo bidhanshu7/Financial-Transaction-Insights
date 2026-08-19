@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package admin.action;
+
+import "common.proto";
+
+
+message CreateUserResponse{
+        string message = 2;
+        bool success = 3;
+}
+
+message CreateUserRequest{
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    int32 roleId = 4;
+}
+
+message UserActionRequest{
+    string userId = 1;
+    string adminId = 2;
+}
+
+
+message GetAllUserResponse {
+    repeated User users = 1;
+}
+
+message GetAllUserRequest{
+    string adminId = 1;
+    int32 roleId = 2;
+}
+
+message GetRoleRequest {
+    int32 roleId = 1;
+}
+
+message GetRoleResponse {
+    Role role = 1;
+    repeated Filter filters = 2;
+}
+
+message AddFilterTypeRequest{
+     string filterName = 1;
+}
+
+message CreateRoleRequest {
+        string adminId = 1;
+        int32 volumeFilterId = 2;
+        int32 amountFilterId = 3;
+        int32 daysFilterId = 4;
+        string roleName = 5;
+}
+
+message AddFilterRequest{
+    int32 filterTypeId = 1;
+    string filterValue = 2;
+    string adminId = 3;
+}
+
+message GetFilterByTypeRequest{
+    int32 filterTypeId = 1;
+}
+message GetFilterByTypeResponse{
+    repeated Filter filters = 1;
+}
+
+message GetFilterTypeResponse{
+    repeated FilterType filterTypes = 1;
+}
+
+
+message EditRoleRequest {
+    int32 roleId = 1;
+    string adminId = 2; 
+    map<string,int32> filters = 3;
+    string roleName = 4;
+}
+
+message ResponseAllRoles{
+    int32 id=1;
+    string roleName=2;
+}
+
+
+message GetAllRoleResponse
+{
+    repeated ResponseAllRoles values= 1;
+}
+
+service AdminActionService {
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
+    rpc DeleteUser(UserActionRequest) returns (MessageResponse) {};
+    // rpc BlockUser(UserActionRequest) returns (MessageResponse) {};
+    rpc GetAllRoles(Empty) returns (GetAllRoleResponse){};
+    rpc GetAllUsers(GetAllUserRequest) returns (GetAllUserResponse) {};
+    rpc CreateRole(CreateRoleRequest) returns (MessageResponse) {};
+    rpc GetRoleDetails(GetRoleRequest) returns (GetRoleResponse) {};
+    rpc AddFilterType(AddFilterTypeRequest) returns (MessageResponse) {};
+    rpc GetFilterType(Empty) returns (GetFilterTypeResponse) {};
+    rpc AddFilter(AddFilterRequest) returns (MessageResponse) {};
+    rpc GetFilterByFilterType(GetFilterByTypeRequest) returns (GetFilterByTypeResponse) {};
+    rpc EditRole(EditRoleRequest) returns (MessageResponse) {};
+}
+
+
+

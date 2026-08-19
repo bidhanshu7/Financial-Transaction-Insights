@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mariadb:11
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      MYSQL_ROOT_PASSWORD: your_root_password
+      MYSQL_DATABASE: bid_db
+      MYSQL_USER: fti_app
+      MYSQL_PASSWORD: "12345"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - fti-net
+
+  server:
+    build:
+      context: ./backend
+      dockerfile: server/Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: bid_db
+      DB_USER: fti_app
+      DB_PASSWORD: "12345"
+      TRANSACTION_HOST_URL: 0.0.0.0:50051
+      USER_HOST_URL: 0.0.0.0:50052
+      ADMIN_HOST_URL: 0.0.0.0:50053
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fti-net
+
+  gateway:
+    build:
+      context: ./backend
+      dockerfile: gateway/Dockerfile
+    environment:
+      PRIVATE_KEY: your_private_key_value
+      TRANSACTION_HOST_URL: server:50051
+      USER_HOST_URL: server:50052
+      ADMIN_HOST_URL: server:50053
+    depends_on:
+      - server
+    networks:
+      - fti-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - gateway
+    networks:
+      - fti-net
+
+networks:
+  fti-net:
+
+volumes:
+  dbdata:

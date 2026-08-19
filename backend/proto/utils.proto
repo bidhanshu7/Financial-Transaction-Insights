@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package utils;
+
+enum Status {
+    Success = 0;
+    Failed= 1;
+    Pending = 2;
+    Reversed = 3;
+}
+
+
+message Transaction {
+    int32 id = 1;
+    int32 totalTxnSum = 2;
+    int32 totalTxn = 3;
+    float totalAmount = 4;
+    string productCode = 5;
+    string productName = 6;
+    string featureCode = 7;
+    string featureName = 8;
+    int32 channel = 9;
+    Status status = 10;
+    string date = 11;
+}
+
+message TransactionResponse {
+    repeated Transaction transactions = 1;
+}
+
+message TransactionRequest {
+    Status status = 1;
+    string date = 2;
+    string featureCode = 3;
+    string productCode = 4;
+    int32 channel = 5;
+}
+
+message Empty {
+}
+
