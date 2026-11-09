@@ -17,3 +17,6 @@ yarn-error.log
 # Build directories
 /dist/
 buil
+
+*.swo
+*.swp
